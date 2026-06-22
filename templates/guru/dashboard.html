@@ -1,0 +1,62 @@
+{% extends 'partials/base.html' %}
+{% set title = 'Dashboard Guru' %}
+
+{% block content %}
+  <div class="mb-3">
+    <h2 class="h5 mb-1">Dashboard Guru</h2>
+    <div class="text-muted small">Ringkasan kehadiran bulan {{ ym }}</div>
+  </div>
+
+  <div class="row g-3">
+    <div class="col-6 col-lg-3">
+      <div class="card card-stat">
+        <div class="card-body">
+          <div class="stat-label">Jumlah Hadir</div>
+          <div class="stat-value">{{ hadir }}</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 col-lg-3">
+      <div class="card card-stat">
+        <div class="card-body">
+          <div class="stat-label">Jumlah Izin</div>
+          <div class="stat-value">{{ izin }}</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 col-lg-2">
+      <div class="card card-stat">
+        <div class="card-body">
+          <div class="stat-label">Sakit</div>
+          <div class="stat-value">{{ sakit }}</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 col-lg-2">
+      <div class="card card-stat">
+        <div class="card-body">
+          <div class="stat-label">Alpha</div>
+          <div class="stat-value">{{ alpha }}</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 col-lg-2">
+      <div class="card card-stat">
+        <div class="card-body">
+          <div class="stat-label">Dinas Luar</div>
+          <div class="stat-value">{{ dinas_luar }}</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-lg-4">
+      <div class="card card-stat">
+        <div class="card-body">
+          <div class="stat-label">Persentase Kehadiran</div>
+          <div class="stat-value">{{ persen }}%</div>
+          <div class="text-muted small">Total data bulan ini: {{ total }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+

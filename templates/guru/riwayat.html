@@ -1,0 +1,75 @@
+{% extends 'partials/base.html' %}
+{% set title = 'Riwayat Absensi' %}
+
+{% block content %}
+  <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+    <div>
+      <h2 class="h5 mb-0">Riwayat Absensi</h2>
+      <div class="text-muted small">Riwayat harian, bulanan, dan tahunan</div>
+    </div>
+  </div>
+
+  <div class="card mb-3">
+    <div class="card-body">
+      <form class="row g-2 align-items-end" method="get">
+        <div class="col-sm-4">
+          <label class="form-label">Dari</label>
+          <input type="date" class="form-control" name="start" value="{{ start }}">
+        </div>
+        <div class="col-sm-4">
+          <label class="form-label">Sampai</label>
+          <input type="date" class="form-control" name="end" value="{{ end }}">
+        </div>
+        <div class="col-sm-4 d-flex gap-2">
+          <button class="btn btn-outline-success" type="submit">Filter</button>
+          <a class="btn btn-outline-secondary" href="{{ url_for('guru.riwayat') }}">Reset</a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+      <div class="table-responsive">
+        <table id="tableRiwayat" class="table table-striped align-middle">
+          <thead>
+            <tr>
+              <th>Tanggal</th>
+              <th>Status</th>
+              <th>Masuk</th>
+              <th>Pulang</th>
+              <th>Terlambat</th>
+              <th>Keterangan</th>
+              <th>Valid</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for r in rows %}
+              <tr>
+                <td>{{ r.tanggal }}</td>
+                <td>{{ r.status }}</td>
+                <td>{{ r.jam_masuk or '-' }}</td>
+                <td>{{ r.jam_pulang or '-' }}</td>
+                <td>{{ r.terlambat or 0 }} mnt</td>
+                <td>{{ r.keterangan or '' }}</td>
+                <td>{{ 'Ya' if r.validated==1 else 'Belum' }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+$(function(){
+  $('#tableRiwayat').DataTable({
+    pageLength: 10,
+    order: [[0,'desc']]
+  });
+});
+</script>
+{% endblock %}
+

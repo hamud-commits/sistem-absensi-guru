@@ -1,0 +1,96 @@
+{% extends 'partials/base.html' %}
+{% set title = 'Form Guru' %}
+{% set is_edit = (mode == 'edit') %}
+
+{% block content %}
+  <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+    <div>
+      <h2 class="h5 mb-0">{{ 'Edit Guru' if is_edit else 'Tambah Guru' }}</h2>
+      <div class="text-muted small">Lengkapi data guru dengan benar</div>
+    </div>
+    <a href="{{ url_for('admin.guru_list') }}" class="btn btn-outline-secondary">Kembali</a>
+  </div>
+
+  <form method="post" enctype="multipart/form-data">
+    <div class="card">
+      <div class="card-body">
+        <div class="row g-3">
+          <div class="col-md-4">
+            <label class="form-label">NIP</label>
+            <input class="form-control" name="nip" value="{{ row.nip if row else '' }}" required>
+          </div>
+          <div class="col-md-8">
+            <label class="form-label">Nama Lengkap</label>
+            <input class="form-control" name="nama" value="{{ row.nama if row else '' }}" required>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Jenis Kelamin</label>
+            <select class="form-select" name="jenis_kelamin">
+              {% set jk = row.jenis_kelamin if row else '' %}
+              <option value="" {% if jk=='' %}selected{% endif %}>-</option>
+              <option value="L" {% if jk=='L' %}selected{% endif %}>L</option>
+              <option value="P" {% if jk=='P' %}selected{% endif %}>P</option>
+            </select>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Tempat Lahir</label>
+            <input class="form-control" name="tempat_lahir" value="{{ row.tempat_lahir if row else '' }}">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Tanggal Lahir</label>
+            <input type="date" class="form-control" name="tanggal_lahir" value="{{ row.tanggal_lahir if row else '' }}">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Pendidikan Terakhir</label>
+            <input class="form-control" name="pendidikan" value="{{ row.pendidikan if row else '' }}">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Jabatan</label>
+            <input class="form-control" name="jabatan" value="{{ row.jabatan if row else '' }}">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Mata Pelajaran</label>
+            <input class="form-control" name="mata_pelajaran" value="{{ row.mata_pelajaran if row else '' }}">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Nomor HP</label>
+            <input class="form-control" name="no_hp" value="{{ row.no_hp if row else '' }}">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Email</label>
+            <input type="email" class="form-control" name="email" value="{{ row.email if row else '' }}">
+          </div>
+          <div class="col-md-8">
+            <label class="form-label">Alamat</label>
+            <input class="form-control" name="alamat" value="{{ row.alamat if row else '' }}">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Status Kepegawaian</label>
+            <input class="form-control" name="status_kepegawaian" value="{{ row.status_kepegawaian if row else '' }}">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Username</label>
+            <input class="form-control" name="username" value="{{ row.username if row else '' }}" required>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Password {{ '(kosongkan jika tidak diubah)' if is_edit else '(default: guru123)' }}</label>
+            <input type="password" class="form-control" name="password" placeholder="{{ 'Kosongkan bila tidak diubah' if is_edit else 'guru123' }}">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Upload Foto Guru</label>
+            <input type="file" class="form-control" name="foto" accept="image/*">
+            {% if row and row.foto %}
+              <div class="mt-2">
+                <img src="{{ url_for('static', filename=row.foto) }}" class="img-thumbnail" style="max-height: 120px;" alt="Foto Guru">
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      <div class="card-footer bg-white d-flex justify-content-end gap-2">
+        <button class="btn btn-success" type="submit">Simpan</button>
+      </div>
+    </div>
+  </form>
+{% endblock %}
+

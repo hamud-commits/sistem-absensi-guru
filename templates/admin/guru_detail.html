@@ -1,0 +1,44 @@
+{% extends 'partials/base.html' %}
+{% set title = 'Detail Guru' %}
+
+{% block content %}
+  <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+    <div>
+      <h2 class="h5 mb-0">Detail Guru</h2>
+      <div class="text-muted small">{{ row.nama }} ({{ row.nip }})</div>
+    </div>
+    <div class="d-flex gap-2">
+      <a href="{{ url_for('admin.guru_edit', guru_id=row.id) }}" class="btn btn-outline-secondary">Edit</a>
+      <a href="{{ url_for('admin.guru_list') }}" class="btn btn-outline-success">Kembali</a>
+    </div>
+  </div>
+
+  <div class="row g-3">
+    <div class="col-md-4">
+      <div class="card">
+        <div class="card-body text-center">
+          <img src="{{ url_for('static', filename=row.foto) if row.foto else url_for('static', filename='images/user.svg') }}" class="rounded-circle mb-3" style="width:140px;height:140px;object-fit:cover;" alt="Foto Guru">
+          <div class="fw-semibold">{{ row.nama }}</div>
+          <div class="text-muted small">{{ row.jabatan or '-' }}</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-body">
+          <div class="row g-3">
+            <div class="col-sm-6"><div class="text-muted small">Jenis Kelamin</div><div>{{ row.jenis_kelamin or '-' }}</div></div>
+            <div class="col-sm-6"><div class="text-muted small">Tempat/Tgl Lahir</div><div>{{ row.tempat_lahir or '-' }} / {{ row.tanggal_lahir or '-' }}</div></div>
+            <div class="col-sm-6"><div class="text-muted small">Pendidikan</div><div>{{ row.pendidikan or '-' }}</div></div>
+            <div class="col-sm-6"><div class="text-muted small">Mata Pelajaran</div><div>{{ row.mata_pelajaran or '-' }}</div></div>
+            <div class="col-sm-6"><div class="text-muted small">No HP</div><div>{{ row.no_hp or '-' }}</div></div>
+            <div class="col-sm-6"><div class="text-muted small">Email</div><div>{{ row.email or '-' }}</div></div>
+            <div class="col-12"><div class="text-muted small">Alamat</div><div>{{ row.alamat or '-' }}</div></div>
+            <div class="col-sm-6"><div class="text-muted small">Status Kepegawaian</div><div>{{ row.status_kepegawaian or '-' }}</div></div>
+            <div class="col-sm-6"><div class="text-muted small">Username</div><div>{{ row.username }}</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

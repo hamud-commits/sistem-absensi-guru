@@ -1,0 +1,90 @@
+{% extends 'partials/base.html' %}
+{% set title = 'Pengaturan' %}
+
+{% block content %}
+  <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+    <div>
+      <h2 class="h5 mb-0">Pengaturan Madrasah</h2>
+      <div class="text-muted small">Profil, tahun ajaran, semester aktif, dan logo</div>
+    </div>
+  </div>
+
+  <form method="post" enctype="multipart/form-data">
+    <div class="card">
+      <div class="card-body">
+        <div class="row g-3">
+          <div class="col-md-8">
+            <label class="form-label">Nama Madrasah</label>
+            <input class="form-control" name="nama_madrasah" value="{{ prof.nama_madrasah }}">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Telepon</label>
+            <input class="form-control" name="telepon" value="{{ prof.telepon or '' }}">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">NSM</label>
+            <input class="form-control" name="nsm" value="{{ prof.nsm or '' }}">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">NPSN</label>
+            <input class="form-control" name="npsn" value="{{ prof.npsn or '' }}">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Email</label>
+            <input type="email" class="form-control" name="email" value="{{ prof.email or '' }}">
+          </div>
+          <div class="col-12">
+            <label class="form-label">Alamat</label>
+            <input class="form-control" name="alamat" value="{{ prof.alamat or '' }}">
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Kepala Madrasah</label>
+            <input class="form-control" name="kepala_madrasah" value="{{ prof.kepala_madrasah or '' }}">
+          </div>
+          <div class="col-md-3">
+            <label class="form-label">Tahun Ajaran</label>
+            <input class="form-control" name="tahun_ajaran" value="{{ prof.tahun_ajaran or '' }}">
+          </div>
+          <div class="col-md-3">
+            <label class="form-label">Semester Aktif</label>
+            <select class="form-select" name="semester_aktif">
+              {% set s = prof.semester_aktif or '' %}
+              <option value="Ganjil" {% if s=='Ganjil' %}selected{% endif %}>Ganjil</option>
+              <option value="Genap" {% if s=='Genap' %}selected{% endif %}>Genap</option>
+            </select>
+          </div>
+
+          <div class="col-md-4">
+            <label class="form-label">Logo Madrasah</label>
+            <input type="file" class="form-control" name="logo_madrasah" accept="image/*">
+            <div class="mt-2">
+              <img src="{{ url_for('static', filename=prof.logo_madrasah) }}" class="img-thumbnail" style="max-height:120px;" alt="Logo Madrasah">
+            </div>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Logo Kemenag</label>
+            <input type="file" class="form-control" name="logo_kemenag" accept="image/*">
+            <div class="mt-2">
+              <img src="{{ url_for('static', filename=prof.logo_kemenag) }}" class="img-thumbnail" style="max-height:120px;" alt="Logo Kemenag">
+            </div>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Tanda Tangan Kepala (Opsional)</label>
+            <input type="file" class="form-control" name="ttd_kepala" accept="image/*">
+            {% if prof.ttd_kepala %}
+              <div class="mt-2">
+                <img src="{{ url_for('static', filename=prof.ttd_kepala) }}" class="img-thumbnail" style="max-height:120px;" alt="TTD Kepala">
+              </div>
+            {% else %}
+              <div class="text-muted small mt-2">Belum diunggah</div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      <div class="card-footer bg-white d-flex justify-content-end">
+        <button class="btn btn-success" type="submit">Simpan</button>
+      </div>
+    </div>
+  </form>
+{% endblock %}
+

@@ -1,0 +1,63 @@
+{% extends 'partials/base.html' %}
+{% set title = 'Data Guru' %}
+
+{% block content %}
+  <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+    <div>
+      <h2 class="h5 mb-0">Manajemen Data Guru</h2>
+      <div class="text-muted small">Kelola data guru aktif</div>
+    </div>
+    <a href="{{ url_for('admin.guru_add') }}" class="btn btn-success">Tambah Guru</a>
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+      <div class="table-responsive">
+        <table id="tableGuru" class="table table-striped align-middle">
+          <thead>
+            <tr>
+              <th>NIP</th>
+              <th>Nama</th>
+              <th>Jabatan</th>
+              <th>Mapel</th>
+              <th>HP</th>
+              <th>Username</th>
+              <th class="text-end">Aksi</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for r in rows %}
+              <tr>
+                <td>{{ r.nip }}</td>
+                <td class="fw-semibold">{{ r.nama }}</td>
+                <td>{{ r.jabatan or '-' }}</td>
+                <td>{{ r.mata_pelajaran or '-' }}</td>
+                <td>{{ r.no_hp or '-' }}</td>
+                <td>{{ r.username }}</td>
+                <td class="text-end">
+                  <a href="{{ url_for('admin.guru_detail', guru_id=r.id) }}" class="btn btn-sm btn-outline-success">Detail</a>
+                  <a href="{{ url_for('admin.guru_edit', guru_id=r.id) }}" class="btn btn-sm btn-outline-secondary">Edit</a>
+                  <form action="{{ url_for('admin.guru_delete', guru_id=r.id) }}" method="post" class="d-inline" onsubmit="return confirm('Hapus data guru ini?')">
+                    <button class="btn btn-sm btn-outline-danger" type="submit">Hapus</button>
+                  </form>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+$(function(){
+  $('#tableGuru').DataTable({
+    pageLength: 10,
+    order: [[1,'asc']]
+  });
+});
+</script>
+{% endblock %}
+

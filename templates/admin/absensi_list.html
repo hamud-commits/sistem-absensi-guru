@@ -1,0 +1,96 @@
+{% extends 'partials/base.html' %}
+{% set title = 'Data Absensi' %}
+
+{% block content %}
+  <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+    <div>
+      <h2 class="h5 mb-0">Manajemen Absensi</h2>
+      <div class="text-muted small">Monitoring, validasi, dan riwayat absensi</div>
+    </div>
+    <a href="{{ url_for('admin.absensi_add') }}" class="btn btn-success">Tambah Absensi</a>
+  </div>
+
+  <div class="card mb-3">
+    <div class="card-body">
+      <form class="row g-2 align-items-end" method="get">
+        <div class="col-sm-4">
+          <label class="form-label">Dari Tanggal</label>
+          <input type="date" class="form-control" name="start" value="{{ start }}">
+        </div>
+        <div class="col-sm-4">
+          <label class="form-label">Sampai Tanggal</label>
+          <input type="date" class="form-control" name="end" value="{{ end }}">
+        </div>
+        <div class="col-sm-4 d-flex gap-2">
+          <button class="btn btn-outline-success" type="submit">Filter</button>
+          <a class="btn btn-outline-secondary" href="{{ url_for('admin.absensi_list') }}">Reset</a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+      <div class="table-responsive">
+        <table id="tableAbsensi" class="table table-striped align-middle">
+          <thead>
+            <tr>
+              <th>Tanggal</th>
+              <th>NIP</th>
+              <th>Nama</th>
+              <th>Status</th>
+              <th>Masuk</th>
+              <th>Pulang</th>
+              <th>Terlambat</th>
+              <th>Valid</th>
+              <th class="text-end">Aksi</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for r in rows %}
+              <tr>
+                <td>{{ r.tanggal }}</td>
+                <td>{{ r.nip }}</td>
+                <td class="fw-semibold">{{ r.nama }}</td>
+                <td><span class="badge bg-success-subtle text-success border border-success-subtle">{{ r.status }}</span></td>
+                <td>{{ r.jam_masuk or '-' }}</td>
+                <td>{{ r.jam_pulang or '-' }}</td>
+                <td>{{ r.terlambat or 0 }} mnt</td>
+                <td>
+                  {% if r.validated == 1 %}
+                    <span class="badge bg-success">Ya</span>
+                  {% else %}
+                    <span class="badge bg-secondary">Belum</span>
+                  {% endif %}
+                </td>
+                <td class="text-end">
+                  {% if r.validated != 1 %}
+                    <form action="{{ url_for('admin.absensi_validasi', absensi_id=r.id) }}" method="post" class="d-inline">
+                      <button class="btn btn-sm btn-outline-success" type="submit">Validasi</button>
+                    </form>
+                  {% endif %}
+                  <a href="{{ url_for('admin.absensi_edit', absensi_id=r.id) }}" class="btn btn-sm btn-outline-secondary">Edit</a>
+                  <form action="{{ url_for('admin.absensi_delete', absensi_id=r.id) }}" method="post" class="d-inline" onsubmit="return confirm('Hapus data absensi ini?')">
+                    <button class="btn btn-sm btn-outline-danger" type="submit">Hapus</button>
+                  </form>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+$(function(){
+  $('#tableAbsensi').DataTable({
+    pageLength: 10,
+    order: [[0,'desc']]
+  });
+});
+</script>
+{% endblock %}
+

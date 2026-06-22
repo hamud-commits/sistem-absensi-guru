@@ -1,0 +1,91 @@
+{% extends 'partials/base.html' %}
+{% set title = 'Rekapitulasi' %}
+
+{% block content %}
+  <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+    <div>
+      <h2 class="h5 mb-0">Rekapitulasi Kehadiran</h2>
+      <div class="text-muted small">Rekap harian, mingguan, bulanan, semester, dan tahunan</div>
+    </div>
+    <div class="d-flex gap-2">
+      <a class="btn btn-outline-success" href="{{ url_for('laporan.export_pdf', start=start, end=end) }}">Export PDF</a>
+      <a class="btn btn-outline-success" href="{{ url_for('laporan.export_excel', start=start, end=end) }}">Export Excel</a>
+    </div>
+  </div>
+
+  <div class="card mb-3">
+    <div class="card-body">
+      <form method="get" class="row g-2 align-items-end">
+        <div class="col-md-3">
+          <label class="form-label">Mode</label>
+          <select class="form-select" name="mode">
+            {% for opt in ['harian','mingguan','bulanan','semester','tahunan'] %}
+              <option value="{{ opt }}" {% if mode==opt %}selected{% endif %}>{{ opt|capitalize }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col-md-3">
+          <label class="form-label">Dari</label>
+          <input type="date" class="form-control" name="start" value="{{ start }}">
+        </div>
+        <div class="col-md-3">
+          <label class="form-label">Sampai</label>
+          <input type="date" class="form-control" name="end" value="{{ end }}">
+        </div>
+        <div class="col-md-3 d-flex gap-2">
+          <button class="btn btn-outline-success" type="submit">Tampilkan</button>
+          <a class="btn btn-outline-secondary" href="{{ url_for('admin.rekap') }}">Reset</a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+      <div class="table-responsive">
+        <table id="tableRekap" class="table table-striped align-middle">
+          <thead>
+            <tr>
+              <th>Tanggal</th>
+              <th>NIP</th>
+              <th>Nama</th>
+              <th>Status</th>
+              <th>Masuk</th>
+              <th>Pulang</th>
+              <th>Terlambat</th>
+              <th>Valid</th>
+              <th>Keterangan</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for r in rows %}
+              <tr>
+                <td>{{ r.tanggal }}</td>
+                <td>{{ r.nip }}</td>
+                <td class="fw-semibold">{{ r.nama }}</td>
+                <td>{{ r.status }}</td>
+                <td>{{ r.jam_masuk or '-' }}</td>
+                <td>{{ r.jam_pulang or '-' }}</td>
+                <td>{{ r.terlambat or 0 }} mnt</td>
+                <td>{{ 'Ya' if r.validated==1 else 'Tidak' }}</td>
+                <td>{{ r.keterangan or '' }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+$(function(){
+  $('#tableRekap').DataTable({
+    pageLength: 10,
+    order: [[0,'desc']]
+  });
+});
+</script>
+{% endblock %}
+

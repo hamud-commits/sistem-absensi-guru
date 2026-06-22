@@ -1,0 +1,89 @@
+:root{
+  --kemenag: #0F9D58;
+  --kemenag-dark:#0B6E4F;
+  --kemenag-soft:#D1FAE5;
+  --slate-50:#F8FAFC;
+  --slate-700:#334155;
+}
+
+body{ font-family: system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif; }
+.bg-surface{ background: var(--slate-50); }
+
+.app-shell{ display:flex; min-height:100vh; }
+.sidebar{
+  width: 280px;
+  background: linear-gradient(180deg, var(--kemenag-dark), var(--kemenag));
+  color:#fff;
+  position: sticky;
+  top:0;
+  height:100vh;
+  padding: 14px 12px;
+}
+.sidebar-brand{ padding: 10px 10px 14px 10px; }
+.brand-logo{ width:44px; height:44px; object-fit:contain; background:#fff; border-radius:12px; padding:6px; }
+.brand-title{ font-weight:800; letter-spacing:.2px; }
+.brand-sub{ font-size:12px; opacity:.9; }
+.sidebar-nav{ display:flex; flex-direction:column; gap:6px; padding: 0 6px; }
+.sidebar-nav .nav-link{
+  color:#fff;
+  opacity:.92;
+  border-radius: 12px;
+  padding: 10px 12px;
+  border: 1px solid rgba(255,255,255,.10);
+}
+.sidebar-nav .nav-link:hover{
+  background: rgba(255,255,255,.10);
+  opacity:1;
+}
+.sidebar-sep{ border-color: rgba(255,255,255,.2); margin: 10px 0; }
+
+.main{ flex:1; display:flex; flex-direction:column; min-width:0; }
+.topbar{
+  background: #fff;
+  border-bottom: 1px solid rgba(2,6,23,.08);
+  padding: 12px 16px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+.app-footer{
+  padding: 14px 16px;
+  border-top: 1px solid rgba(2,6,23,.08);
+  background:#fff;
+}
+
+.card-stat{
+  border: 0;
+  box-shadow: 0 8px 24px rgba(2,6,23,.06);
+}
+.stat-label{ color: var(--slate-700); font-size: 12px; }
+.stat-value{ font-size: 26px; font-weight: 800; color: var(--kemenag-dark); }
+
+.btn-success{ background: var(--kemenag); border-color: var(--kemenag); }
+.btn-success:hover{ background: var(--kemenag-dark); border-color: var(--kemenag-dark); }
+
+/* login */
+.login-page{
+  background: radial-gradient(1200px 500px at 20% 10%, rgba(15,157,88,.22), transparent 60%),
+              radial-gradient(800px 400px at 90% 20%, rgba(209,250,229,.70), transparent 60%),
+              linear-gradient(180deg, #ffffff, var(--slate-50));
+  min-height: 100vh;
+}
+.login-bg{
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(45deg, rgba(15,157,88,.06) 25%, transparent 25%, transparent 50%, rgba(15,157,88,.06) 50%, rgba(15,157,88,.06) 75%, transparent 75%, transparent);
+  background-size: 60px 60px;
+  pointer-events: none;
+  opacity: .6;
+}
+.login-card{ border-radius: 20px; }
+.login-logo{ width: 58px; height: 58px; object-fit: contain; }
+
+@media (max-width: 768px){
+  .sidebar{ position: fixed; left: -290px; transition: left .2s ease; z-index: 1050; }
+  .sidebar.open{ left: 0; }
+  .app-shell{ padding-left: 0; }
+}
+

@@ -1,0 +1,36 @@
+{% extends 'partials/base.html' %}
+{% set title = 'Data Admin' %}
+
+{% block content %}
+  <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+    <div>
+      <h2 class="h5 mb-0">Data Admin</h2>
+      <div class="text-muted small">Ubah profil admin dan password</div>
+    </div>
+  </div>
+
+  <form method="post">
+    <div class="card">
+      <div class="card-body">
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label">Nama</label>
+            <input class="form-control" name="nama" value="{{ row.nama }}">
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Username</label>
+            <input class="form-control" name="username" value="{{ row.username }}">
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Password Baru (opsional)</label>
+            <input type="password" class="form-control" name="password" placeholder="Kosongkan bila tidak diubah">
+          </div>
+        </div>
+      </div>
+      <div class="card-footer bg-white d-flex justify-content-end">
+        <button class="btn btn-success" type="submit">Simpan</button>
+      </div>
+    </div>
+  </form>
+{% endblock %}
+

@@ -1,0 +1,35 @@
+{% extends 'partials/base.html' %}
+{% set title = 'Laporan' %}
+
+{% block content %}
+  <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+    <div>
+      <h2 class="h5 mb-0">Laporan Absensi</h2>
+      <div class="text-muted small">Export PDF/Excel dengan kop surat, logo, dan tanda tangan</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+      <form class="row g-2 align-items-end" method="get">
+        <div class="col-sm-4">
+          <label class="form-label">Dari</label>
+          <input type="date" class="form-control" name="start" value="{{ start }}">
+        </div>
+        <div class="col-sm-4">
+          <label class="form-label">Sampai</label>
+          <input type="date" class="form-control" name="end" value="{{ end }}">
+        </div>
+        <div class="col-sm-4 d-flex gap-2">
+          <a class="btn btn-outline-success" href="{{ url_for('laporan.export_pdf', start=start, end=end) }}">Export PDF</a>
+          <a class="btn btn-outline-success" href="{{ url_for('laporan.export_excel', start=start, end=end) }}">Export Excel</a>
+        </div>
+      </form>
+
+      <div class="alert alert-info mt-3 mb-0">
+        Tip: unggah logo dan tanda tangan di menu <b>Pengaturan</b> untuk tampil di kop surat laporan.
+      </div>
+    </div>
+  </div>
+{% endblock %}
+

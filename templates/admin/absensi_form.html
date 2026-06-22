@@ -1,0 +1,79 @@
+{% extends 'partials/base.html' %}
+{% set title = 'Form Absensi' %}
+{% set is_edit = (mode == 'edit') %}
+
+{% block content %}
+  <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+    <div>
+      <h2 class="h5 mb-0">{{ 'Edit Absensi' if is_edit else 'Tambah Absensi' }}</h2>
+      <div class="text-muted small">Lengkapi data absensi guru</div>
+    </div>
+    <a href="{{ url_for('admin.absensi_list') }}" class="btn btn-outline-secondary">Kembali</a>
+  </div>
+
+  <form method="post">
+    <div class="card">
+      <div class="card-body">
+        <div class="row g-3">
+          {% if not is_edit %}
+            <div class="col-md-6">
+              <label class="form-label">Guru</label>
+              <select class="form-select" name="guru_id" required>
+                <option value="">-- pilih guru --</option>
+                {% for g in gurus %}
+                  <option value="{{ g.id }}">{{ g.nama }} ({{ g.nip }})</option>
+                {% endfor %}
+              </select>
+            </div>
+          {% else %}
+            <div class="col-md-6">
+              <label class="form-label">Guru</label>
+              <input class="form-control" value="{{ row.nama }} ({{ row.nip }})" disabled>
+            </div>
+          {% endif %}
+
+          <div class="col-md-6">
+            <label class="form-label">Tanggal</label>
+            <input type="date" class="form-control" name="tanggal" value="{{ row.tanggal if row else '' }}" required>
+          </div>
+
+          <div class="col-md-4">
+            <label class="form-label">Status Kehadiran</label>
+            {% set st = row.status if row else 'Hadir' %}
+            <select class="form-select" name="status">
+              {% for opt in ['Hadir','Izin','Sakit','Alpha','Dinas Luar'] %}
+                <option value="{{ opt }}" {% if st==opt %}selected{% endif %}>{{ opt }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <div class="col-md-4">
+            <label class="form-label">Jam Masuk</label>
+            <input type="time" class="form-control" name="jam_masuk" value="{{ row.jam_masuk if row and row.jam_masuk else '' }}">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Jam Pulang</label>
+            <input type="time" class="form-control" name="jam_pulang" value="{{ row.jam_pulang if row and row.jam_pulang else '' }}">
+          </div>
+
+          <div class="col-md-8">
+            <label class="form-label">Keterangan</label>
+            <input class="form-control" name="keterangan" value="{{ row.keterangan if row else '' }}" placeholder="Opsional">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Validasi</label>
+            {% set v = row.validated if row else 1 %}
+            <select class="form-select" name="validated">
+              <option value="1" {% if v==1 %}selected{% endif %}>Valid</option>
+              <option value="0" {% if v!=1 %}selected{% endif %}>Belum</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer bg-white d-flex justify-content-end gap-2">
+        <button class="btn btn-success" type="submit">Simpan</button>
+      </div>
+    </div>
+  </form>
+{% endblock %}
+
