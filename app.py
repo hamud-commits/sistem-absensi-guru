@@ -2,21 +2,24 @@ import os
 from flask import Flask, redirect, url_for
 from flask_login import LoginManager, current_user
 
+# Pastikan file config.py ada
 from config import Config
 from utils.db import close_db, init_db, query_one, execute
 from utils.security import hash_password
 from utils.user import AppUser
 
-
-def ensure_database(app: Flask):
+def ensure_database(app):
     db_path = app.config["DB_PATH"]
-    os.makedirs(os.path.dirname(db_path), exist_ok=True)
+    # Memastikan folder database ada
+    db_dir = os.path.dirname(db_path)
+    if db_dir and not os.path.exists(db_dir):
+        os.makedirs(db_dir, exist_ok=True)
 
     if not os.path.exists(db_path):
         with app.app_context():
             init_db()
 
-    # seed admin default bila belum ada
+    # Seed admin default
     with app.app_context():
         row = query_one("SELECT id FROM admins LIMIT 1")
         if not row:
@@ -25,13 +28,13 @@ def ensure_database(app: Flask):
                 ("Admin Madrasah", "admin", hash_password("admin123")),
             )
 
-
 def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
 
-    os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
-    os.makedirs(app.config["LOGO_FOLDER"], exist_ok=True)
+    # Pastikan folder upload ada
+    os.makedirs(app.config.get("UPLOAD_FOLDER", "uploads"), exist_ok=True)
+    os.makedirs(app.config.get("LOGO_FOLDER", "static/logo"), exist_ok=True)
 
     ensure_database(app)
     app.teardown_appcontext(close_db)
@@ -57,7 +60,7 @@ def create_app():
             return redirect(url_for("admin.dashboard"))
         return redirect(url_for("guru.dashboard"))
 
-    # blueprints
+    # Blueprints
     from blueprints.auth.routes import bp as auth_bp
     from blueprints.admin.routes import bp as admin_bp
     from blueprints.guru.routes import bp as guru_bp
@@ -70,10 +73,9 @@ def create_app():
 
     return app
 
-
+# Variabel 'app' inilah yang akan dibaca oleh file api/index.py
 app = create_app()
 
-
 if __name__ == "__main__":
+    # Hanya jalan saat di laptop/lokal
     app.run(debug=True)
-
