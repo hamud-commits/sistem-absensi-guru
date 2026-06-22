@@ -2,35 +2,91 @@
 {% set title = 'Data Admin' %}
 
 {% block content %}
-  <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
-    <div>
-      <h2 class="h5 mb-0">Data Admin</h2>
-      <div class="text-muted small">Ubah profil admin dan password</div>
-    </div>
+<div class="container-fluid pt-2 pb-5">
+  <div class="mb-4 text-center">
+    <h2 class="h4 fw-bold text-dark mb-1">Profil Administrator</h2>
+    <p class="text-muted small">Kelola informasi data diri dan kredensial akses Anda</p>
   </div>
 
-  <form method="post">
-    <div class="card">
-      <div class="card-body">
-        <div class="row g-3">
-          <div class="col-md-6">
-            <label class="form-label">Nama</label>
-            <input class="form-control" name="nama" value="{{ row.nama }}">
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-8 col-lg-5">
+      
+      <div class="card shadow-sm border-0 rounded-4 overflow-hidden">
+        
+        <div class="bg-success p-4 text-center text-white position-relative">
+          <div class="d-inline-flex align-items-center justify-content-center bg-white text-success rounded-circle shadow-sm mb-3" style="width: 70px; height: 70px;">
+            <i class="bi bi-person-badge-fill fs-2"></i>
           </div>
-          <div class="col-md-6">
-            <label class="form-label">Username</label>
-            <input class="form-control" name="username" value="{{ row.username }}">
-          </div>
-          <div class="col-md-6">
-            <label class="form-label">Password Baru (opsional)</label>
-            <input type="password" class="form-control" name="password" placeholder="Kosongkan bila tidak diubah">
-          </div>
+          <h5 class="fw-bold mb-0">{{ row.nama }}</h5>
+          <small class="opacity-75">@{{ row.username }}</small>
+        </div>
+
+        <div class="card-body p-4 p-md-5 bg-white">
+          <form method="post">
+            
+            <div class="mb-4">
+              <label class="form-label fw-bold text-secondary" style="font-size: 0.8rem; letter-spacing: 0.5px;">NAMA LENGKAP</label>
+              <div class="input-group input-group-lg shadow-sm">
+                <span class="input-group-text bg-light border-end-0"><i class="bi bi-person text-muted"></i></span>
+                <input type="text" class="form-control bg-light border-start-0 fs-6" name="nama" value="{{ row.nama }}" placeholder="Masukkan nama..." required>
+              </div>
+            </div>
+
+            <div class="mb-4">
+              <label class="form-label fw-bold text-secondary" style="font-size: 0.8rem; letter-spacing: 0.5px;">USERNAME</label>
+              <div class="input-group input-group-lg shadow-sm">
+                <span class="input-group-text bg-light border-end-0"><i class="bi bi-fingerprint text-muted"></i></span>
+                <input type="text" class="form-control bg-light border-start-0 fs-6" name="username" value="{{ row.username }}" placeholder="Masukkan username..." required>
+              </div>
+            </div>
+
+            <hr class="text-muted my-4 border-secondary-subtle">
+
+            <div class="mb-5">
+              <div class="d-flex justify-content-between align-items-end mb-2">
+                <label class="form-label fw-bold text-secondary mb-0" style="font-size: 0.8rem; letter-spacing: 0.5px;">PASSWORD BARU</label>
+                <span class="badge bg-warning-subtle text-warning border border-warning-subtle rounded-pill px-2">Opsional</span>
+              </div>
+              <div class="input-group input-group-lg shadow-sm">
+                <span class="input-group-text bg-light border-end-0"><i class="bi bi-shield-lock text-muted"></i></span>
+                <input type="password" class="form-control bg-light border-start-0 border-end-0 fs-6" id="password" name="password" placeholder="Kosongkan bila tidak diubah">
+                <button class="btn btn-light border border-start-0 text-muted" type="button" id="togglePassword">
+                  <i class="bi bi-eye"></i>
+                </button>
+              </div>
+              <div class="form-text mt-2 small text-muted"><i class="bi bi-info-circle me-1"></i>Isi hanya jika ingin mengganti password.</div>
+            </div>
+
+            <div class="d-grid mt-2">
+              <button type="submit" class="btn btn-success btn-lg py-3 fw-bold rounded-3 shadow-sm d-flex align-items-center justify-content-center gap-2">
+                <i class="bi bi-floppy-fill"></i> Simpan Perubahan
+              </button>
+            </div>
+
+          </form>
         </div>
       </div>
-      <div class="card-footer bg-white d-flex justify-content-end">
-        <button class="btn btn-success" type="submit">Simpan</button>
-      </div>
+      
     </div>
-  </form>
+  </div>
+</div>
 {% endblock %}
 
+{% block scripts %}
+<script>
+  // Script untuk fitur Mata (Show/Hide Password)
+  document.addEventListener('DOMContentLoaded', function() {
+    const togglePassword = document.querySelector('#togglePassword');
+    const password = document.querySelector('#password');
+    const icon = togglePassword.querySelector('i');
+
+    togglePassword.addEventListener('click', function () {
+      const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+      password.setAttribute('type', type);
+      
+      icon.classList.toggle('bi-eye');
+      icon.classList.toggle('bi-eye-slash');
+    });
+  });
+</script>
+{% endblock %}

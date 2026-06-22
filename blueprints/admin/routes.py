@@ -129,6 +129,35 @@ def api_chart_tahunan():
     return jsonify({"labels": labels, "data": data})
 
 
+@bp.route("/api/chart/mingguan")
+@login_required
+@role_required("admin")
+def api_chart_mingguan():
+    labels = []
+    data = []
+    today = date.today()
+    
+    for i in range(6, -1, -1):
+        target_date = today - timedelta(days=i)
+        date_str = target_date.isoformat()
+        display_str = target_date.strftime("%d %b")
+        
+        row = query_one(
+            """
+            SELECT SUM(CASE WHEN status='Hadir' THEN 1 ELSE 0 END) AS hadir
+            FROM absensi
+            WHERE tanggal = ?
+            """,
+            (date_str,)
+        )
+        total_hadir = int(row["hadir"] or 0) if row else 0
+        
+        labels.append(display_str)
+        data.append(total_hadir)
+
+    return jsonify({"labels": labels, "data": data})
+
+
 # -----------------------------
 # CRUD GURU
 # -----------------------------

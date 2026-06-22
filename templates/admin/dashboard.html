@@ -2,100 +2,120 @@
 {% set title = 'Dashboard Admin' %}
 
 {% block content %}
-  <div class="d-flex flex-wrap justify-content-between align-items-end gap-2 mb-3">
+  <div class="d-flex flex-wrap justify-content-between align-items-end gap-2 mb-4">
     <div>
-      <h2 class="h5 mb-1">Dashboard Admin</h2>
-      <div class="text-muted small">Ringkasan kehadiran tanggal {{ today }}</div>
+      <h2 class="h4 mb-1 fw-bold">Dashboard Admin</h2>
+      <div class="text-muted">Ringkasan kehadiran tanggal <strong>{{ today }}</strong></div>
+    </div>
+  </div>
+
+  <div class="row g-3 mb-3">
+    <div class="col-12 col-lg-4">
+      <div class="card card-stat h-100 shadow-sm border-0">
+        <div class="card-body">
+          <div class="stat-label text-muted mb-1">Total Guru Aktif</div>
+          <div class="stat-value fs-3 fw-bold">{{ total_guru }}</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 col-lg-4">
+      <div class="card card-stat h-100 shadow-sm border-0">
+        <div class="card-body">
+          <div class="stat-label text-muted mb-1">Hadir Hari Ini</div>
+          <div class="stat-value fs-3 fw-bold text-success">{{ hadir }}</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 col-lg-4">
+      <div class="card card-stat h-100 shadow-sm border-0 bg-success text-white">
+        <div class="card-body">
+          <div class="stat-label text-white-50 mb-1">Persentase Kehadiran</div>
+          <div class="stat-value fs-3 fw-bold">{{ persen }}%</div>
+        </div>
+      </div>
     </div>
   </div>
 
   <div class="row g-3 mb-4">
     <div class="col-6 col-lg-3">
-      <div class="card card-stat">
+      <div class="card card-stat h-100 shadow-sm border-0 border-start border-info border-4">
         <div class="card-body">
-          <div class="stat-label">Total Guru Aktif</div>
-          <div class="stat-value">{{ total_guru }}</div>
+          <div class="stat-label text-muted small mb-1">Izin</div>
+          <div class="stat-value fs-4 fw-bold text-info">{{ izin }}</div>
         </div>
       </div>
     </div>
     <div class="col-6 col-lg-3">
-      <div class="card card-stat">
+      <div class="card card-stat h-100 shadow-sm border-0 border-start border-warning border-4">
         <div class="card-body">
-          <div class="stat-label">Guru Hadir Hari Ini</div>
-          <div class="stat-value">{{ hadir }}</div>
+          <div class="stat-label text-muted small mb-1">Sakit</div>
+          <div class="stat-value fs-4 fw-bold text-warning">{{ sakit }}</div>
         </div>
       </div>
     </div>
-    <div class="col-6 col-lg-2">
-      <div class="card card-stat">
+    <div class="col-6 col-lg-3">
+      <div class="card card-stat h-100 shadow-sm border-0 border-start border-danger border-4">
         <div class="card-body">
-          <div class="stat-label">Izin</div>
-          <div class="stat-value">{{ izin }}</div>
+          <div class="stat-label text-muted small mb-1">Alpha</div>
+          <div class="stat-value fs-4 fw-bold text-danger">{{ alpha }}</div>
         </div>
       </div>
     </div>
-    <div class="col-6 col-lg-2">
-      <div class="card card-stat">
+    <div class="col-6 col-lg-3">
+      <div class="card card-stat h-100 shadow-sm border-0 border-start border-secondary border-4">
         <div class="card-body">
-          <div class="stat-label">Sakit</div>
-          <div class="stat-value">{{ sakit }}</div>
-        </div>
-      </div>
-    </div>
-    <div class="col-6 col-lg-2">
-      <div class="card card-stat">
-        <div class="card-body">
-          <div class="stat-label">Alpha</div>
-          <div class="stat-value">{{ alpha }}</div>
-        </div>
-      </div>
-    </div>
-    <div class="col-6 col-lg-2">
-      <div class="card card-stat">
-        <div class="card-body">
-          <div class="stat-label">Dinas Luar</div>
-          <div class="stat-value">{{ dinas_luar }}</div>
-        </div>
-      </div>
-    </div>
-    <div class="col-12 col-lg-4">
-      <div class="card card-stat">
-        <div class="card-body">
-          <div class="stat-label">Persentase Kehadiran</div>
-          <div class="stat-value">{{ persen }}%</div>
+          <div class="stat-label text-muted small mb-1">Dinas Luar</div>
+          <div class="stat-value fs-4 fw-bold text-secondary">{{ dinas_luar }}</div>
         </div>
       </div>
     </div>
   </div>
 
-  <div class="row g-3">
+  <div class="row g-3 mb-4">
     <div class="col-12 col-lg-6">
-      <div class="card">
-        <div class="card-header bg-white">
-          <div class="fw-semibold">Grafik Kehadiran Bulanan</div>
+      <div class="card h-100 shadow-sm border-0">
+        <div class="card-header bg-white border-bottom-0 pt-3 pb-0">
+          <h6 class="fw-bold mb-0">Tren Kehadiran Mingguan</h6>
+          <small class="text-muted">7 Hari Terakhir</small>
         </div>
-        <div class="card-body">
-          <canvas id="chartBulanan" height="120"></canvas>
+        <div class="card-body position-relative" style="min-height: 250px;">
+          <canvas id="chartMingguan"></canvas>
         </div>
       </div>
     </div>
     <div class="col-12 col-lg-6">
-      <div class="card">
-        <div class="card-header bg-white">
-          <div class="fw-semibold">Grafik Status Kehadiran (Hari Ini)</div>
+      <div class="card h-100 shadow-sm border-0">
+        <div class="card-header bg-white border-bottom-0 pt-3 pb-0">
+          <h6 class="fw-bold mb-0">Tren Kehadiran Bulanan</h6>
+          <small class="text-muted">Tahun {{ today[:4] }}</small>
         </div>
-        <div class="card-body">
-          <canvas id="chartStatus" height="120"></canvas>
+        <div class="card-body position-relative" style="min-height: 250px;">
+          <canvas id="chartBulanan"></canvas>
         </div>
       </div>
     </div>
-    <div class="col-12">
-      <div class="card">
-        <div class="card-header bg-white">
-          <div class="fw-semibold">Grafik Rekap Tahunan</div>
+  </div>
+
+  <div class="row g-3 mb-4">
+    <div class="col-12 col-lg-8">
+      <div class="card h-100 shadow-sm border-0">
+        <div class="card-header bg-white border-bottom-0 pt-3 pb-0">
+          <h6 class="fw-bold mb-0">Rekapitulasi Tahunan</h6>
+          <small class="text-muted">Perbandingan Total Hadir</small>
         </div>
-        <div class="card-body">
-          <canvas id="chartTahunan" height="90"></canvas>
+        <div class="card-body position-relative" style="min-height: 250px;">
+          <canvas id="chartTahunan"></canvas>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-lg-4">
+      <div class="card h-100 shadow-sm border-0">
+        <div class="card-header bg-white border-bottom-0 pt-3 pb-0">
+          <h6 class="fw-bold mb-0">Status Hari Ini</h6>
+          <small class="text-muted">Proporsi Kehadiran</small>
+        </div>
+        <div class="card-body d-flex align-items-center justify-content-center position-relative" style="min-height: 250px;">
+          <canvas id="chartStatus"></canvas>
         </div>
       </div>
     </div>
@@ -104,7 +124,7 @@
 
 {% block scripts %}
 <script>
-async function loadChart(url, canvasId, type, datasetLabel) {
+async function loadChart(url, canvasId, type, datasetLabel, bgColor, borderColor) {
   const res = await fetch(url);
   const json = await res.json();
   const ctx = document.getElementById(canvasId);
@@ -116,20 +136,32 @@ async function loadChart(url, canvasId, type, datasetLabel) {
         label: datasetLabel,
         data: json.data,
         borderWidth: 2,
-        borderColor: '#0F9D58',
-        backgroundColor: 'rgba(15, 157, 88, 0.15)',
+        borderColor: borderColor || '#0F9D58',
+        backgroundColor: bgColor || 'rgba(15, 157, 88, 0.15)',
+        tension: 0.4, // Kurva lebih halus
+        fill: type === 'line' // Memberikan efek blok warna di bawah garis
       }]
     },
     options: {
       responsive: true,
-      plugins: { legend: { display: type !== 'doughnut' } }
+      maintainAspectRatio: false, // Penting agar grafik merespon tinggi card-body
+      plugins: { 
+        legend: { 
+          display: type !== 'doughnut',
+          position: 'top' 
+        } 
+      },
+      scales: type === 'doughnut' ? {} : {
+        y: { beginAtZero: true }
+      }
     }
   });
 }
 
-loadChart('{{ url_for("admin.api_chart_bulanan") }}?year={{ today[:4] }}', 'chartBulanan', 'line', 'Hadir');
-loadChart('{{ url_for("admin.api_chart_status_hari_ini") }}', 'chartStatus', 'doughnut', 'Status');
-loadChart('{{ url_for("admin.api_chart_tahunan") }}', 'chartTahunan', 'bar', 'Hadir');
+// Eksekusi Grafik
+loadChart('{{ url_for("admin.api_chart_mingguan") }}', 'chartMingguan', 'line', 'Guru Hadir', 'rgba(66, 133, 244, 0.15)', '#4285F4');
+loadChart('{{ url_for("admin.api_chart_bulanan") }}?year={{ today[:4] }}', 'chartBulanan', 'line', 'Guru Hadir', 'rgba(15, 157, 88, 0.15)', '#0F9D58');
+loadChart('{{ url_for("admin.api_chart_tahunan") }}', 'chartTahunan', 'bar', 'Guru Hadir', 'rgba(244, 180, 0, 0.5)', '#F4B400');
+loadChart('{{ url_for("admin.api_chart_status_hari_ini") }}', 'chartStatus', 'doughnut', 'Status', null, null);
 </script>
 {% endblock %}
-
